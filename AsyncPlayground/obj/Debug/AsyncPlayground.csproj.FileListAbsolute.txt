@@ -1,0 +1,16 @@
+c:\users\gol\documents\visual studio 2017\Projects\AsyncPlayground\AsyncPlayground\bin\Debug\AsyncPlayground.exe.config
+c:\users\gol\documents\visual studio 2017\Projects\AsyncPlayground\AsyncPlayground\bin\Debug\AsyncPlayground.exe
+c:\users\gol\documents\visual studio 2017\Projects\AsyncPlayground\AsyncPlayground\bin\Debug\AsyncPlayground.pdb
+c:\users\gol\documents\visual studio 2017\Projects\AsyncPlayground\AsyncPlayground\obj\Debug\AsyncPlayground.csprojResolveAssemblyReference.cache
+c:\users\gol\documents\visual studio 2017\Projects\AsyncPlayground\AsyncPlayground\obj\Debug\MainWindow.g.cs
+c:\users\gol\documents\visual studio 2017\Projects\AsyncPlayground\AsyncPlayground\obj\Debug\App.g.cs
+c:\users\gol\documents\visual studio 2017\Projects\AsyncPlayground\AsyncPlayground\obj\Debug\GeneratedInternalTypeHelper.g.cs
+c:\users\gol\documents\visual studio 2017\Projects\AsyncPlayground\AsyncPlayground\obj\Debug\AsyncPlayground_MarkupCompile.cache
+c:\users\gol\documents\visual studio 2017\Projects\AsyncPlayground\AsyncPlayground\obj\Debug\AsyncPlayground_MarkupCompile.lref
+c:\users\gol\documents\visual studio 2017\Projects\AsyncPlayground\AsyncPlayground\obj\Debug\App.baml
+c:\users\gol\documents\visual studio 2017\Projects\AsyncPlayground\AsyncPlayground\obj\Debug\MainWindow.baml
+c:\users\gol\documents\visual studio 2017\Projects\AsyncPlayground\AsyncPlayground\obj\Debug\AsyncPlayground.g.resources
+c:\users\gol\documents\visual studio 2017\Projects\AsyncPlayground\AsyncPlayground\obj\Debug\AsyncPlayground.Properties.Resources.resources
+c:\users\gol\documents\visual studio 2017\Projects\AsyncPlayground\AsyncPlayground\obj\Debug\AsyncPlayground.csproj.GenerateResource.Cache
+c:\users\gol\documents\visual studio 2017\Projects\AsyncPlayground\AsyncPlayground\obj\Debug\AsyncPlayground.exe
+c:\users\gol\documents\visual studio 2017\Projects\AsyncPlayground\AsyncPlayground\obj\Debug\AsyncPlayground.pdb
