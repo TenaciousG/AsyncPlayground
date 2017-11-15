@@ -21,7 +21,7 @@ namespace AsyncPlayground.Commands
     {
         private readonly Func<T, Task> _executeMethod;
         private readonly DelegateCommand<T> _underlyingCommand;
-        private bool _isExecuting;
+        //private bool _isExecuting;
 
         public AwaitableDelegateCommand(Func<T, Task> executeMethod)
             : this(executeMethod, _ => true)
@@ -38,13 +38,13 @@ namespace AsyncPlayground.Commands
         {
             try
             {
-                _isExecuting = true;
+                //_isExecuting = true;
                 RaiseCanExecuteChanged();
                 await _executeMethod(obj);
             }
             finally
             {
-                _isExecuting = false;
+                //_isExecuting = false;
                 RaiseCanExecuteChanged();
             }
         }
@@ -53,7 +53,9 @@ namespace AsyncPlayground.Commands
 
         public bool CanExecute(object parameter)
         {
-            return !_isExecuting && _underlyingCommand.CanExecute((T)parameter);
+            return 
+                //!_isExecuting && 
+                _underlyingCommand.CanExecute((T)parameter);
         }
 
         public event EventHandler CanExecuteChanged

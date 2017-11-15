@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using AsyncPlayground.Annotations;
@@ -10,35 +12,68 @@ namespace AsyncPlayground
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-        private string m_fetchResult;
+        private string m_fetchAsyncResult;
+        private string m_fetchSyncResult;
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ICommand FetchSomethingCommand { get; }
+        public ICommand FetchSomethingAsyncCommand { get; }
 
-        public string FetchResult
+        public string FetchAsyncResult
         {
-            get { return m_fetchResult; }
+            get { return m_fetchAsyncResult; }
             set
             {
-                m_fetchResult = value;
+                m_fetchAsyncResult = value;
                 OnPropertyChanged();
             }
         }
 
-        public MainViewModel()
+        public ICommand FetchSomethingSyncCommand { get; }
+
+        public string FetchSyncResult
         {
-            FetchSomethingCommand = new AwaitableDelegateCommand(FetchSomething);
-            FetchResult = "Initial";
+            get { return m_fetchSyncResult; }
+            set
+            {
+                m_fetchSyncResult = value;
+                OnPropertyChanged();
+            }
         }
 
-        private async Task FetchSomething()
+        private int m_asyncFetchCounter;
+        private int m_syncFetchCounter;
+
+        public MainViewModel()
+        {
+            FetchSomethingAsyncCommand = new AwaitableDelegateCommand(FetchSomethingAsync);
+            FetchAsyncResult = "Initial";
+
+            FetchSomethingSyncCommand = new DelegateCommand(FetchSomethingSync);
+            FetchSyncResult = "Initial";
+
+            m_asyncFetchCounter = 0;
+            m_syncFetchCounter = 0;
+        }
+
+        private void FetchSomethingSync()
+        {
+            var fetchResult = DoSomethingThatTakesAWhileSync();
+
+            m_syncFetchCounter++;
+
+            FetchSyncResult = $"SyncFetch {m_syncFetchCounter} :: {fetchResult}";
+        }
+
+       private async Task FetchSomethingAsync()
         {
             var timeConsumingTask = DoSomethingThatTakesAWhile();
 
             int a = DoSomethingQuickMeanwhile();
 
             var fetchResult = await timeConsumingTask;
-            FetchResult = $"fetched {fetchResult}";
+
+            m_asyncFetchCounter++;
+            FetchAsyncResult = $"AsyncFetch {m_asyncFetchCounter} ::  {fetchResult}";
 
         }
 
@@ -47,10 +82,18 @@ namespace AsyncPlayground
             return 1 + 2;
         }
 
-        private async Task<DateTime> DoSomethingThatTakesAWhile()
+        private async Task<TimeSpan> DoSomethingThatTakesAWhile()
         {
-            await Task.Delay(5000);
-            return DateTime.Now;
+            var millisecondsDelay = new Random(DateTime.Now.Millisecond).Next(500, 4000);
+            await Task.Delay(millisecondsDelay);
+            return DateTime.Now.TimeOfDay;
+        }
+
+        private TimeSpan DoSomethingThatTakesAWhileSync()
+        {
+            var millisecondsDelay = new Random(DateTime.Now.Millisecond).Next(500, 4000);
+            Thread.Sleep(millisecondsDelay);
+            return DateTime.Now.TimeOfDay;
         }
 
         [NotifyPropertyChangedInvocator]
