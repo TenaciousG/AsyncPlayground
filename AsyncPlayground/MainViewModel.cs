@@ -17,6 +17,7 @@ namespace AsyncPlayground
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ICommand FetchSomethingAsyncCommand { get; }
+        public ICommand FetchSomethingSyncCommand { get; }
 
         public string FetchAsyncResult
         {
@@ -27,8 +28,6 @@ namespace AsyncPlayground
                 OnPropertyChanged();
             }
         }
-
-        public ICommand FetchSomethingSyncCommand { get; }
 
         public string FetchSyncResult
         {

@@ -54,6 +54,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AsyncStuff\AsyncMethods.cs" />
+    <Compile Include="AsyncStuff\AwaitableDelegateCommand.cs" />
+    <Compile Include="AsyncStuff\IAsyncCommand.cs" />
     <Compile Include="Commands\DelegateCommandGist.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
