@@ -57,6 +57,8 @@
     <Compile Include="AsyncStuff\AsyncMethods.cs" />
     <Compile Include="AsyncStuff\AwaitableDelegateCommand.cs" />
     <Compile Include="AsyncStuff\IAsyncCommand.cs" />
+    <Compile Include="AsyncStuff\INotifyTaskCompletion.cs" />
+    <Compile Include="AsyncStuff\NotifyTaskCompletion.cs" />
     <Compile Include="Commands\DelegateCommandGist.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="Properties\Annotations.cs" />

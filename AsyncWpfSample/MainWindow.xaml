@@ -22,6 +22,14 @@
                 <TextBlock Margin="10" Text="{Binding FetchSyncResult}"/>
             </StackPanel>
             </Border>
+    
+        <Border BorderThickness="2" BorderBrush="Green">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Margin="10">Data loaded on Initialization: </TextBlock>
+                <TextBlock Margin="10" Text="{Binding SetupAsyncLoadedResult.Result}"/>
+            </StackPanel>
+        </Border>
+        
         </StackPanel>
     
     </Window>

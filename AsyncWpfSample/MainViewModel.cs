@@ -1,8 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using AsyncWpfSample.AsyncStuff;
 using AsyncWpfSample.Commands;
 using AsyncWpfSample.Properties;
@@ -14,49 +18,55 @@ namespace AsyncWpfSample
     {
         private string m_fetchAsyncResult;
         private string m_fetchSyncResult;
+        private NotifyTaskCompletion<string> m_setupAsyncLoadedResult;
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ICommand FetchSomethingAsyncCommand { get; }
 
         public ICommand FetchSomethingSyncCommand { get; }
 
-        public string FetchAsyncResult
-        {
-            get { return m_fetchAsyncResult; }
-            set
-            {
-                m_fetchAsyncResult = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string FetchSyncResult
-        {
-            get { return m_fetchSyncResult; }
-            set
-            {
-                m_fetchSyncResult = value;
-                OnPropertyChanged();
-            }
-        }
-
-        //private int m_asyncFetchCounter;
-        //private int m_syncFetchCounter;
-
         public MainViewModel()
         {
+            ThrowIfNotUiThread();
             FetchSomethingAsyncCommand = new AwaitableDelegateCommand(DoWebRequestsAsync);
             FetchAsyncResult = "Initial";
 
             FetchSomethingSyncCommand = new DelegateCommand(DoWebRequestsSync);
             FetchSyncResult = "Initial";
 
-            //m_asyncFetchCounter = 0;
-            //m_syncFetchCounter = 0;
+            //Laster data asynkront uten å blokke UI-tråden - og sender propertyChanged når den er ferdig
+            SetupAsyncLoadedResult = new NotifyTaskCompletion<string>(LoadSomeDataAsync());
         }
 
+        private async Task<string> LoadSomeDataAsync()
+        {
+            ThrowIfNotUiThread();
+            var asyncMethods = new AsyncMethods();
+
+            var urlResult = await asyncMethods.GetURLContentsAsync(@"http://msdn.microsoft.com");
+
+
+            ThrowIfNotUiThread();
+            var urlLength = urlResult.Length.ToString();
+            return urlLength;
+        }
+
+        private static void ThrowIfNotUiThread()
+        {
+            if (!IsOnUiThread())
+            {
+                throw new Exception("Not on UI thread!");
+            }
+        }
+
+        private static bool IsOnUiThread()
+        {
+            return Application.Current.Dispatcher.CheckAccess();
+        }
+        
         private async Task DoWebRequestsAsync()
         {
+            ThrowIfNotUiThread();
             var asyncMethods = new AsyncMethods();
             // Make a list of web addresses.  
             List<string> urlList = asyncMethods.SetUpURLList();
@@ -80,6 +90,7 @@ namespace AsyncWpfSample
 
         private void DoWebRequestsSync()
         {
+            ThrowIfNotUiThread();
             var syncMethods = new SyncMethods();
             // Make a list of web addresses.  
             List<string> urlList = syncMethods.SetUpURLList();
@@ -103,6 +114,7 @@ namespace AsyncWpfSample
 
         private void DisplayResults(string url, byte[] content)
         {
+            ThrowIfNotUiThread();
             // Display the length of each website. The string format   
             // is designed to be used with a monospaced font, such as  
             // Lucida Console or Global Monospace.  
@@ -114,6 +126,7 @@ namespace AsyncWpfSample
 
         private void DisplayAsyncResults(string url, byte[] content)
         {
+            ThrowIfNotUiThread();
             // Display the length of each website. The string format   
             // is designed to be used with a monospaced font, such as  
             // Lucida Console or Global Monospace.  
@@ -121,6 +134,36 @@ namespace AsyncWpfSample
             // Strip off the "http://".  
             var displayURL = url.Replace("http://", "");
             FetchAsyncResult += string.Format("\n{0,-58} {1,8}", displayURL, bytes);
+        }
+
+        public NotifyTaskCompletion<string> SetupAsyncLoadedResult
+        {
+            get { return m_setupAsyncLoadedResult; }
+            set
+            {
+                m_setupAsyncLoadedResult = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string FetchAsyncResult
+        {
+            get { return m_fetchAsyncResult; }
+            set
+            {
+                m_fetchAsyncResult = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string FetchSyncResult
+        {
+            get { return m_fetchSyncResult; }
+            set
+            {
+                m_fetchSyncResult = value;
+                OnPropertyChanged();
+            }
         }
 
         [NotifyPropertyChangedInvocator]
